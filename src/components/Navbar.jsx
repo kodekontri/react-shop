@@ -1,3 +1,4 @@
+import { cartContext } from "@/context/cartContext";
 import {
   Disclosure,
   DisclosureButton,
@@ -7,8 +8,10 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ShoppingBag, ShoppingCart } from "lucide-react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ShoppingCart } from "lucide-react";
+import { useContext } from "react";
+import CartButton from "./Cart/CartList";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -22,6 +25,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const { itemsCount } = useContext(cartContext);
   return (
     <Disclosure as="nav" className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -66,19 +70,21 @@ export default function Navbar() {
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
+            <CartButton
               type="button"
               className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
               <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>
-              <span className="flex items-center">
+              <div className="flex items-center">
                 <ShoppingCart aria-hidden="true" className="h-6 w-6" />
-                <span className="text-xs grid place-items-center w-5 h-5 bg-red-500 rounded-full text-white">
-                  6
-                </span>
-              </span>
-            </button>
+                {itemsCount > 0 && (
+                  <span className="text-xs grid place-items-center w-5 h-5 bg-red-500 rounded-full text-white">
+                    {itemsCount}
+                  </span>
+                )}
+              </div>
+            </CartButton>
 
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
